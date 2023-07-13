@@ -1,84 +1,16 @@
-﻿/*
-Crie todo o mecanismo para flexibilizar a criação de diferentes estratégias de impostos, igual visto no vídeo. Crie a interface Imposto, e as estratégias ICMS e ISS. O ISS deve ser 6% do valor do orçamento, e o ICMS deve ser 5% do valor do orçamento mais o valor fixo de R$ 50,00.
-Crie a classe Orcamento, que tem como atributo um valor. Crie um construtor que recebe esse valor, e um getter para devolvê-lo.
-Crie a classe CalculadorDeImposto, que recebe um Orcamento e um Imposto. Essa classe calcula o imposto usando a estratégia recebida e imprime o resultado na tela.
-Cole aqui o código dos impostos e do CalculadorDeImposto.
-*/
+﻿using Imposto;
+using Investimento;
 
-namespace Strategy
+internal class Program
 {
-    public class Orcamento
+    static void Main(string[] args)
     {
-        public Orcamento(double valor) => Valor = valor;
-        public double Valor { get; private set; }
-    }
+        ContaBancaria orcamento = new ContaBancaria(100);
 
-    public interface IImposto
-    {
-        double Calcula(Orcamento orcamento);
-    }
+        RealizadorDeInvestimentos realizadorDeInvestimentos = new RealizadorDeInvestimentos();
 
-    public class ICMS : IImposto
-    {
-        public double Calcula(Orcamento orcamento)
-        {
-            return orcamento.Valor * 0.05 + 50;
-        }
-    }
-
-    public class ISS : IImposto
-    {
-        public double Calcula(Orcamento orcamento)
-        {
-            return orcamento.Valor * 0.06;
-        }
-    }
-
-    public class ICCC : IImposto
-    {
-        /*
-        Implemente mais uma estratégia de cálculo de imposto.
-        Crie o imposto que se chama ICCC, que retorna 5% do valor total caso o orçamento seja menor do que R$ 1000,00 reais, 7% caso o valor esteja entre R$ 1000 e R$ 3000,00 com os limites inclusos, ou 8% mais 30 reais, caso o valor esteja acima de R$ 3000,00.
-        Escreva um método main que testa sua implementação. Cole aqui o código do ICCC.
-        */
-
-        public double Calcula(Orcamento orcamento)
-        {
-            if (orcamento.Valor == 0)
-                return 0;
-
-            if (orcamento.Valor < 1000)
-                return orcamento.Valor * 0.05;
-
-            if (orcamento.Valor <= 3000)
-                return orcamento.Valor * 0.07;
-
-            return orcamento.Valor * 0.08 + 30;
-        }
-    }
-
-    public class CalculadorDeImposto
-    {
-        public void RealizaCalculo(Orcamento orcamento, IImposto imposto)
-        {
-            Console.WriteLine($"O valor do imposto é: {imposto.Calcula(orcamento).ToString("C")}");
-        }
-    }
-
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Orcamento orcamento = new Orcamento(100);
-
-            CalculadorDeImposto calculadorImposto = new CalculadorDeImposto();
-
-            calculadorImposto.RealizaCalculo(orcamento, new ICMS());
-            calculadorImposto.RealizaCalculo(orcamento, new ISS());
-
-            calculadorImposto.RealizaCalculo(new Orcamento(999), new ICCC());
-            calculadorImposto.RealizaCalculo(new Orcamento(3_000), new ICCC());
-            calculadorImposto.RealizaCalculo(new Orcamento(10_000), new ICCC());
-        }
+        realizadorDeInvestimentos.RealizaCalculo(orcamento, new Conservador());
+        realizadorDeInvestimentos.RealizaCalculo(orcamento, new Moderado   ());
+        realizadorDeInvestimentos.RealizaCalculo(orcamento, new Arrojado   ());
     }
 }
