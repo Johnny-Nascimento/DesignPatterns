@@ -1,5 +1,4 @@
-﻿using Imposto;
-using Investimento;
+﻿using Exercicio;
 
 internal class Program
 {

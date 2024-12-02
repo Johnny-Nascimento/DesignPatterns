@@ -13,7 +13,7 @@ Para verificar se a chance é maior que 30%, por exemplo, use:
 bool escolhido = new Random().Next(101) > 30;
 */
 
-namespace Investimento
+namespace Exercicio
 {
     public class ContaBancaria
     {
