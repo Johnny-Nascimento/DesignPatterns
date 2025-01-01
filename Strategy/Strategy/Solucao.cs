@@ -5,7 +5,7 @@ Crie a classe CalculadorDeImposto, que recebe um Orcamento e um Imposto. Essa cl
 Cole aqui o código dos impostos e do CalculadorDeImposto.
 */
 
-namespace Imposto
+namespace Strategy.Solucao
 {
     public class Orcamento
     {

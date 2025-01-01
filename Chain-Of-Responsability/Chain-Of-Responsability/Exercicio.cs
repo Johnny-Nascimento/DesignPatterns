@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-/*
+﻿/*
 Um servidor de aplicação bancária que se comunica com outros, deve responder de várias formas diferentes, de acordo com a solicitação da aplicação cliente.
 Se a aplicação solicitar uma Conta, cujos atributos são separados por ponto-e-vírgula, por exemplo, o servidor deverá responder nesse formato; se a aplicação solicitar XML,
 
@@ -16,95 +10,91 @@ Imagine que a classe Requisição possui uma propriedade chamada Formato, que re
 Uma Conta possui apenas saldo e nome do titular:
  */
 
-namespace Chain_Of_Responsability
+namespace Chain_Of_Responsability.Exercicio
 {
-    internal class Exercicio
+    public class Conta
     {
-        public class Conta
-        {
-            public double Saldo { get; private set; }
-            public String Nome { get; private set; }
+        public double Saldo { get; private set; }
+        public String Nome { get; private set; }
 
-            public Conta(String nome, double saldo)
-            {
-                Saldo = saldo;
-                Nome = nome;
-            }
+        public Conta(String nome, double saldo)
+        {
+            Saldo = saldo;
+            Nome = nome;
         }
+    }
 
-        public enum Formato
+    public enum Formato
+    {
+        XML,
+        CSV,
+        PORCENTO,
+        NENHUM
+    }
+
+    public class Requisicao
+    {
+        public Formato Formato { get; private set; }
+
+        public Requisicao(Formato formato)
         {
-            XML,
-            CSV,
-            PORCENTO,
-            NENHUM
+            Formato = formato;
         }
+    }
 
-        public class Requisicao
+    public interface IFormato
+    {
+        public IFormato Proximo { get; set; }
+        public String AnalisaFormato(Requisicao requisicao);
+    }
+
+    public class FormatoXML : IFormato
+    {
+        public String AnalisaFormato(Requisicao requisicao) { return requisicao.Formato == Formato.XML ? "XML" : Proximo.AnalisaFormato(requisicao); }
+        public IFormato Proximo { get; set; }
+
+        public FormatoXML(IFormato proximo)
         {
-            public Formato Formato { get; private set; }
-
-            public Requisicao(Formato formato)
-            {
-                Formato = formato;
-            }
+            Proximo = proximo;
         }
+    }
 
-        public interface IFormato
+    public class FormatoCSV : IFormato
+    {
+        public String AnalisaFormato(Requisicao requisicao) { return requisicao.Formato == Formato.CSV ? "CSV" : Proximo.AnalisaFormato(requisicao); }
+        public IFormato Proximo { get; set; }
+
+        public FormatoCSV(IFormato proximo)
         {
-            public IFormato Proximo { get; set; }
-            public String AnalisaFormato(Requisicao requisicao);
+            Proximo = proximo;
         }
+    }
 
-        public class FormatoXML : IFormato
+    public class FormatoPorcento : IFormato
+    {
+        public String AnalisaFormato(Requisicao requisicao) { return requisicao.Formato == Formato.PORCENTO ? "Porcento": Proximo.AnalisaFormato(requisicao); }
+        public IFormato Proximo { get; set; }
+
+        public FormatoPorcento(IFormato proximo)
         {
-            public String AnalisaFormato(Requisicao requisicao) { return requisicao.Formato == Formato.XML ? "XML" : Proximo.AnalisaFormato(requisicao); }
-            public IFormato Proximo { get; set; }
-
-            public FormatoXML(IFormato proximo)
-            {
-                Proximo = proximo;
-            }
+            Proximo = proximo;
         }
+    }
 
-        public class FormatoCSV : IFormato
+    public class SemFormato : IFormato
+    {
+        public String AnalisaFormato(Requisicao requisicao) { return "Nenhum"; }
+        public IFormato Proximo { get; set; }
+    }
+
+    public class MontaRequisicao
+    {
+        public String FazRequisicao(Requisicao requisicao, Conta conta)
         {
-            public String AnalisaFormato(Requisicao requisicao) { return requisicao.Formato == Formato.CSV ? "CSV" : Proximo.AnalisaFormato(requisicao); }
-            public IFormato Proximo { get; set; }
-
-            public FormatoCSV(IFormato proximo)
-            {
-                Proximo = proximo;
-            }
-        }
-
-        public class FormatoPorcento : IFormato
-        {
-            public String AnalisaFormato(Requisicao requisicao) { return requisicao.Formato == Formato.PORCENTO ? "Porcento": Proximo.AnalisaFormato(requisicao); }
-            public IFormato Proximo { get; set; }
-
-            public FormatoPorcento(IFormato proximo)
-            {
-                Proximo = proximo;
-            }
-        }
-
-        public class SemFormato : IFormato
-        {
-            public String AnalisaFormato(Requisicao requisicao) { return "Nenhum"; }
-            public IFormato Proximo { get; set; }
-        }
-
-        public class MontaRequisicao
-        {
-            public String FazRequisicao(Requisicao requisicao, Conta conta)
-            {
                 
-                FormatoXML formato = new FormatoXML(new FormatoCSV(new FormatoPorcento(new SemFormato())));
+            FormatoXML formato = new FormatoXML(new FormatoCSV(new FormatoPorcento(new SemFormato())));
    
-                return formato.AnalisaFormato(requisicao);
-            }
+            return formato.AnalisaFormato(requisicao);
         }
-
     }
 }

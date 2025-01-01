@@ -1,4 +1,4 @@
-﻿using Exercicio;
+﻿using Strategy.Exercicio;
 
 internal class Program
 {
