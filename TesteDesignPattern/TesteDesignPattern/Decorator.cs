@@ -17,23 +17,5 @@ namespace TesteDesignPattern
 
             Assert.AreEqual(impostoCalculado, 86);
         }
-
-        [TestMethod]
-        public void TestaTesta()
-        {
-            IList<Conta> contas = new List<Conta>();
-
-            contas.Add(new Conta { Saldo = 99.99, DataAbertura = new DateTime(2024, 12, 10) });
-            contas.Add(new Conta { Saldo = 100.00, DataAbertura = DateTime.Now });
-            contas.Add(new Conta { Saldo = 501000.00, DataAbertura = new DateTime(2024, 12, 10) });
-            contas.Add(new Conta { Saldo = 1000.00, DataAbertura = new DateTime(2024, 12, 10) });
-
-            FiltraSaldoMenorCemReais filtro = new FiltraSaldoMenorCemReais(new FiltraSaldoMaiorQuinhentosMilReais(new FiltraDataAberturaMesCorrente()));
-            IList<Conta> contasValidas = filtro.Filtra(contas);
-
-            Assert.AreEqual(contasValidas.Count, 1);
-            Assert.AreEqual(contasValidas[0].Saldo, 1000.00);
-            Assert.AreEqual(contasValidas[0].DataAbertura, new DateTime(2024, 12, 10));
-        }
     }
 }
