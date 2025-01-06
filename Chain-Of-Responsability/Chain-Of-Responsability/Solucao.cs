@@ -44,7 +44,7 @@ namespace Chain_Of_Responsability.Solucao
 
         public double Desconta(Orcamento orcamento)
         {
-            if (orcamento.Itens.Count > 5)
+            if (orcamento.Itens.Count >= 5)
                 return orcamento.Valor * 0.1;
 
             return Proximo.Desconta(orcamento);
@@ -72,14 +72,14 @@ namespace Chain_Of_Responsability.Solucao
         {
             foreach (Item item in orcamento.Itens)
             {
-                if (item.Nome.Equals(nomeDoItem))
+                if (item.Nome.ToUpper().Equals(nomeDoItem))
                     return true;
             }
 
             return false;
         }
 
-        double IDesconto.Desconta(Orcamento orcamento)
+        public double Desconta(Orcamento orcamento)
         {
             if (Existe("LAPIS", orcamento) && Existe("CANETA", orcamento))
                 return orcamento.Valor * 0.05;
@@ -104,8 +104,8 @@ namespace Chain_Of_Responsability.Solucao
         {
             IDesconto desconto = new DescontoPorCincoItens();
             desconto.Proximo = new DescontoPorMaisDeQuinhentosReais();
-            desconto.Proximo = new DescontoPorVendaCasada();
-            desconto.Proximo.Proximo = new SemDesconto();
+            desconto.Proximo.Proximo = new DescontoPorVendaCasada();
+            desconto.Proximo.Proximo.Proximo = new SemDesconto();
 
             return desconto.Desconta(orcamento);
         }
