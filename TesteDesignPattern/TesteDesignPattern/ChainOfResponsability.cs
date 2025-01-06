@@ -2,7 +2,7 @@
 namespace TesteDesignPattern
 {
     [TestClass]
-    public sealed class Test2
+    public sealed class ChainOfResponsability
     {
         [TestMethod]
         public void TestMethod2()

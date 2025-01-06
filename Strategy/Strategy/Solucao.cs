@@ -59,9 +59,9 @@ namespace Strategy.Solucao
 
     public class CalculadorDeImposto
     {
-        public void RealizaCalculo(Orcamento orcamento, IImposto imposto)
+        public string RealizaCalculo(Orcamento orcamento, IImposto imposto)
         {
-            Console.WriteLine($"O valor do imposto é: {imposto.Calcula(orcamento).ToString("C")}");
+            return $"O valor do imposto é: {imposto.Calcula(orcamento).ToString("C")}";
         }
     }
 }
