@@ -72,6 +72,24 @@ namespace TesteDesignPattern
             Assert.AreEqual(orcamento.Valor, 98.00);
         }
 
+        [TestMethod]
+        public void TesteDescontoExtraDuasVezes()
+        {
+            Orcamento orcamento = new Orcamento(100.00);
+            orcamento.AplicaDescontoExtra();
+            Assert.AreEqual(orcamento.Valor, 95.00);
+
+            try
+            {
+                orcamento.AplicaDescontoExtra();
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Desconto já aplicado.", ex.Message);
+            }
+        }
+
         // ^^^^ *** É POSSIVEL TESTAR TODOS OS OUTROS STATUS COM SEUS DESCONTOS, MAS VAI DEMORAR MUITO E É MUITO PARECIDO *** ^^^^
     }
 }

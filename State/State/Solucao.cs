@@ -51,6 +51,8 @@ namespace State.Solucao
 
     public class EmAprovacao : EstadoOrcamento
     {
+        private bool DescontoAplicado { get; set; }
+
         public void EmAprovacaoOrcamento(Orcamento orcamento)
         {
             throw new Exception("Orçamento ja se encontra nesse status.");
@@ -73,12 +75,18 @@ namespace State.Solucao
 
         public void AplicaDescontoExtra(Orcamento orcamento)
         {
+            if (DescontoAplicado)
+                throw new Exception("Desconto já aplicado.");
+
             orcamento.Valor -= orcamento.Valor * 0.05;
+            DescontoAplicado = true;
         }
     }
 
     public class Aprovado : EstadoOrcamento
     {
+        private bool DescontoAplicado { get; set; }
+
         public void EmAprovacaoOrcamento(Orcamento orcamento)
         {
             throw new Exception("Orçamento Aprovado não pode ter o status alterado para Em aprovação.");
@@ -100,7 +108,11 @@ namespace State.Solucao
 
         public void AplicaDescontoExtra(Orcamento orcamento)
         {
+            if (DescontoAplicado)
+                throw new Exception("Desconto já aplicado.");
+
             orcamento.Valor -= orcamento.Valor * 0.02;
+            DescontoAplicado = true;
         }
     }
 
