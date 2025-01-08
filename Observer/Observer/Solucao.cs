@@ -1,10 +1,52 @@
-﻿// A solução propões uma maneira mais legivel, mais simples de realizar a montagem do objeto, trazendo menos complexidade,
-// realizando operações encapsuladas quando necessário como é o caso do valor bruto
-// ainda assim mantem a segurança de deixar os sets privados.
-// e permite usar o Fluent, que é a chamada de um método que retorna o proprio objeto e assim por diante. Notafiscal.Metodo().Metodo().Metodo()...
+﻿// A solucao visa criar uma classe que vai disparar uma série de ações que forem necessárias para serem executadas após a construção do objeto
+// Essa classe vai ser unicamente responsavel por isso.
+// A chamada vai ser feita após a construção com a lista de ações necessárias.
 
-namespace Builder.Solucao
+namespace Observer.Solucao
 {
+    public interface AcaoAposGerarNota
+    {
+        public string Executa(NotaFiscal notaFiscal);
+    }
+
+    public class NotaFiscalDao : AcaoAposGerarNota
+    {
+        public string Executa(NotaFiscal notaFiscal)
+        {
+            return "Salvando no banco";
+        }
+    }
+
+    public class EnviadorDeEmail : AcaoAposGerarNota
+    {
+        public string Executa(NotaFiscal notaFiscal)
+        {
+            return "Enviando Email";
+        }
+    }
+
+    public class EnviadorDeSMS : AcaoAposGerarNota
+    {
+        public string Executa(NotaFiscal notaFiscal)
+        {
+            return "Enviando SMS";
+        }
+    }
+
+    public class Multiplicador : AcaoAposGerarNota
+    {
+        public double Fator { get; private set; }
+        public Multiplicador(double fator)
+        {
+            Fator = fator;
+        }
+
+        public string Executa(NotaFiscal notaFiscal)
+        {
+            return $"{notaFiscal.ValorBruto * Fator}";
+        }
+    }
+
     public class ItemNota
     {
         public String Descricao { get; private set; }
@@ -80,10 +122,13 @@ namespace Builder.Solucao
         public double ValorBruto { get; private set; }
         public List<ItemNota> Itens { get; private set; } = new List<ItemNota>();
         public string Observacoes { get; private set; } = string.Empty;
+        private List<AcaoAposGerarNota> acoesAposGerarNota { get; set; }
 
         public BuilderNotaFiscal()
         {
             DataEmissao = DateTime.Now;
+
+            acoesAposGerarNota = new List<AcaoAposGerarNota>();
         }
 
         public BuilderNotaFiscal ParaEmpresa(string razaoSocial)
@@ -122,9 +167,21 @@ namespace Builder.Solucao
             return this;
         }
 
+        public void AdicionaAcao(AcaoAposGerarNota acao)
+        {
+            acoesAposGerarNota.Add(acao);
+        }
+
         public NotaFiscal Constroi()
         {
-            return new NotaFiscal(RazaoSocial, Cnpj, DataEmissao, ValorBruto, Itens, Observacoes);
+            NotaFiscal nf = new NotaFiscal(RazaoSocial, Cnpj, DataEmissao, ValorBruto, Itens, Observacoes);
+
+            string retornoAcoes = string.Empty;
+
+            foreach (var acao in acoesAposGerarNota)
+                retornoAcoes += acao.Executa(nf);
+
+            return nf;
         }
     }
 }

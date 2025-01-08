@@ -8,12 +8,26 @@ namespace TesteDesignPattern
         [TestMethod]
         public void TesteBuilder()
         {
+            ItemNotaBuilder itemNotaBuilder = new ItemNotaBuilder();
             BuilderNotaFiscal builder = new BuilderNotaFiscal();
+
             NotaFiscal notaFiscal = builder.ParaEmpresa("Razao social")
                                            .ComCnpj("CNPJ")
                                            .ComData(DateTime.Now)
-                                           .ComItem(new ItemNota("Descricao 1", 50.00, 1))
-                                           .ComItem(new ItemNota("Descricao 2", 50.00, 1))
+                                           .Com
+                                           (
+                                            itemNotaBuilder.ComDescricao("Descricao 1")
+                                                            .ComQuantidade(1)
+                                                            .ComValor(50.00)
+                                                            .Constroi()
+                                           )
+                                           .Com
+                                           (
+                                            itemNotaBuilder.ComDescricao("Descricao 2")
+                                                           .ComQuantidade(1)
+                                                           .ComValor(50.00)
+                                                           .Constroi()
+                                           )
                                            .ComObservacoes("Observacao")
                                            .Constroi();
 

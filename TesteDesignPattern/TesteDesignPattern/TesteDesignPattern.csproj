@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\Builder\Builder\Builder.csproj" />
     <ProjectReference Include="..\..\Chain-Of-Responsability\Chain-Of-Responsability\Chain-Of-Responsability.csproj" />
     <ProjectReference Include="..\..\Decorator\Decorator\Decorator.csproj" />
+    <ProjectReference Include="..\..\Observer\Observer\Observer.csproj" />
     <ProjectReference Include="..\..\State\State\State.csproj" />
     <ProjectReference Include="..\..\Strategy\Strategy\Strategy.csproj" />
     <ProjectReference Include="..\..\TemplateMethod\TemplateMethod.csproj" />

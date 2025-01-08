@@ -1,9 +1,8 @@
-﻿// A solução propões uma maneira mais legivel, mais simples de realizar a montagem do objeto, trazendo menos complexidade,
-// realizando operações encapsuladas quando necessário como é o caso do valor bruto
-// ainda assim mantem a segurança de deixar os sets privados.
-// e permite usar o Fluent, que é a chamada de um método que retorna o proprio objeto e assim por diante. Notafiscal.Metodo().Metodo().Metodo()...
+﻿// O problema é quando a nota fiscal termina de ser setada, o próximo passo seria, salva-la no banco, envia-la por email e sms, nesse caso não deveria ser mais responsabilidade da classe
+// implementar essas rotinas
 
-namespace Builder.Solucao
+
+namespace Observer.Problema
 {
     public class ItemNota
     {
@@ -122,9 +121,31 @@ namespace Builder.Solucao
             return this;
         }
 
+        private void SalvaNoBanco()
+        {
+            Console.WriteLine("Salvando no banco");
+        }
+
+        private void EnviaEmail()
+        {
+            Console.WriteLine("Enviando Email");
+        }
+
+        private void EnviaSMS()
+        {
+            Console.WriteLine("Enviando SMS");
+        }
+
         public NotaFiscal Constroi()
         {
-            return new NotaFiscal(RazaoSocial, Cnpj, DataEmissao, ValorBruto, Itens, Observacoes);
+            NotaFiscal nf = new NotaFiscal(RazaoSocial, Cnpj, DataEmissao, ValorBruto, Itens, Observacoes);
+
+            // Estas são as ações que não deveriam mais caber a nota fiscal.
+            SalvaNoBanco();
+            EnviaEmail();
+            EnviaSMS();
+
+            return nf;
         }
     }
 }
