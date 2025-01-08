@@ -1,4 +1,5 @@
 ﻿using State.Solucao;
+using State.Exercicio;
 
 namespace TesteDesignPattern
 {
@@ -91,5 +92,37 @@ namespace TesteDesignPattern
         }
 
         // ^^^^ *** É POSSIVEL TESTAR TODOS OS OUTROS STATUS COM SEUS DESCONTOS, MAS VAI DEMORAR MUITO E É MUITO PARECIDO *** ^^^^
+
+        [TestMethod]
+        public void TesteContaPositiva()
+        {
+            Conta conta = new Conta(100.00);
+            conta.Saca(50.00);
+            Assert.AreEqual(50.00, conta.Saldo);
+
+            conta.Deposita(100);
+            Assert.AreEqual(148.00, conta.Saldo);
+        }
+
+        [TestMethod]
+        public void TesteContaNegativa()
+        {
+            Conta conta = new Conta(-100.00);
+
+            try
+            {
+                conta.Saca(50.00);
+                Assert.Fail();
+
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Conta negativa, não é possível sacar.", ex.Message);
+            }
+
+
+            conta.Deposita(200.00);
+            Assert.AreEqual(90, conta.Saldo);
+        }
     }
 }
