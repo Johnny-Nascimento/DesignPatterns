@@ -39,11 +39,9 @@ namespace State.Problema
 
                 case StatusOrcamento.Reprovado:
                     throw new Exception("Não é possivel aplicar desconto em um orçamento reprovado.");
-                break;
 
                 case StatusOrcamento.Finalizado:
                     throw new Exception("Não é possivel aplicar desconto em um orçamento reprovado.");
-                break;
 
                 // A problematica esta em uma infinita criação de status e regras que podem crescer este método e aumentar complexidade.
             }

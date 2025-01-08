@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Builder\Builder\Builder.csproj" />
     <ProjectReference Include="..\..\Chain-Of-Responsability\Chain-Of-Responsability\Chain-Of-Responsability.csproj" />
     <ProjectReference Include="..\..\Decorator\Decorator\Decorator.csproj" />
     <ProjectReference Include="..\..\State\State\State.csproj" />

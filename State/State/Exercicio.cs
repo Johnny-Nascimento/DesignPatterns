@@ -3,7 +3,7 @@ namespace State.Exercicio
 {
     public class Conta
     {
-        private StatusConta Status { get; set; }
+        public StatusConta Status { get; set; }
         public double Saldo { get; set; }
         
         public Conta(double saldo)
