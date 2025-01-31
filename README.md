@@ -1,3 +1,1 @@
-Padrões de projeto em .net
-
-Projeto desenvolvido com o curso: https://cursos.alura.com.br/course/design-patterns-dotnet/
+[DesignPattern1.pdf](https://github.com/user-attachments/files/18618629/DesignPattern1.pdf)
